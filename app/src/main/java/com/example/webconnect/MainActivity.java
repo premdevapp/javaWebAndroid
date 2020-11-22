@@ -22,13 +22,15 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RequestQueue queue;
+    //private RequestQueue queue;
+    RequestQueue queue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        queue = Volley.newRequestQueue(this);
+        //queue = Volley.newRequestQueue(this);
+        queue = MySingleton.getInstance(this.getApplicationContext()).getRequestQueue();
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, "https://jsonplaceholder.typicode.com/todos/2", (JSONObject) null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -63,9 +65,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Json error", "onErrorResponse: "+ error.getMessage());
 
         });
-
-        //queue.add(jsonObjectRequest);
         queue.add(jsonArrayRequest);
+        //queue.add(jsonObjectRequest);
+        //queue.add(jsonArrayRequest);
 
 /*
 
