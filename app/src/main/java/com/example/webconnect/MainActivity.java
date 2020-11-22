@@ -11,10 +11,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,7 +44,28 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        queue.add(jsonObjectRequest);
+        // JsonArrayRequest
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, "https://jsonplaceholder.typicode.com/todos", (JSONArray) null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                //Log.d("Json response", "onResponse: "+ response);
+                for(int i = 0; i < response.length(); i++){
+                    try {
+                        JSONObject jsonObject = response.getJSONObject(i);
+                        Log.d("Json response", "onResponse: "+ jsonObject.getString("id") +" " + jsonObject.getString("title"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }, (error) -> {
+            Log.d("Json error", "onErrorResponse: "+ error.getMessage());
+
+        });
+
+        //queue.add(jsonObjectRequest);
+        queue.add(jsonArrayRequest);
 
 /*
 
